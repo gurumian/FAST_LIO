@@ -520,6 +520,7 @@ void Preprocess::mid360_handler(const sensor_msgs::msg::PointCloud2::UniquePtr &
     added_pt.curvature = 0.;
 
     int layer = pl_orig.points[i].line;
+    if (layer >= N_SCANS) continue; // Check bounds to prevent segfault
     double yaw_angle = atan2(added_pt.y, added_pt.x) * 57.2957;
 
     if (is_first[layer])
