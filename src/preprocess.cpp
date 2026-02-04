@@ -180,9 +180,9 @@ void Preprocess::avia_handler(const livox_ros_driver2::msg::CustomMsg::UniquePtr
           pl_full[i].curvature = msg->points[i].offset_time /
                                  float(1000000);  // use curvature as time of each laser points, curvature unit: ms
 
-          if ((abs(pl_full[i].x - pl_full[i - 1].x) > 1e-7)
+          if (((abs(pl_full[i].x - pl_full[i - 1].x) > 1e-7)
               || (abs(pl_full[i].y - pl_full[i - 1].y) > 1e-7)
-              || (abs(pl_full[i].z - pl_full[i - 1].z) > 1e-7)
+              || (abs(pl_full[i].z - pl_full[i - 1].z) > 1e-7))
               && (pl_full[i].x * pl_full[i].x + pl_full[i].y * pl_full[i].y + pl_full[i].z * pl_full[i].z > (blind * blind)))
           {
             pl_surf.push_back(pl_full[i]);
@@ -520,7 +520,6 @@ void Preprocess::mid360_handler(const sensor_msgs::msg::PointCloud2::UniquePtr &
     added_pt.curvature = 0.;
 
     int layer = pl_orig.points[i].line;
-    if (layer >= N_SCANS) continue; // Check bounds to prevent segfault
     double yaw_angle = atan2(added_pt.y, added_pt.x) * 57.2957;
 
     if (is_first[layer])
