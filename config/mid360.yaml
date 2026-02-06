@@ -9,6 +9,9 @@
         runtime_pos_log_enable: false
         map_file_path: "./test.pcd"
 
+        frame_id: "camera_init"       # parent frame for odometry, TF, point clouds, and path
+        child_frame_id: "body"        # child frame (IMU/body frame) for odometry and TF
+
         common:
             lid_topic:  "/livox/lidar"
             imu_topic:  "/livox/imu"
