@@ -834,8 +834,9 @@ public:
         this->declare_parameter<int>("pcd_save.interval", -1);
         this->declare_parameter<vector<double>>("mapping.extrinsic_T", vector<double>());
         this->declare_parameter<vector<double>>("mapping.extrinsic_R", vector<double>());
-        this->declare_parameter<string>("frame_id", "camera_init");
-        this->declare_parameter<string>("child_frame_id", "body");
+        this->declare_parameter<string>("frame_id.map_frame", "camera_init");
+        this->declare_parameter<string>("frame_id.body_frame", "body");
+        this->declare_parameter<string>("frame_id.lidar_frame", "livox");
 
         this->get_parameter_or<bool>("publish.path_en", path_en, true);
         this->get_parameter_or<bool>("publish.effect_map_en", effect_pub_en, false);
@@ -844,9 +845,13 @@ public:
         this->get_parameter_or<bool>("publish.dense_publish_en", dense_pub_en, true);
         this->get_parameter_or<bool>("publish.scan_bodyframe_pub_en", scan_body_pub_en, true);
         this->get_parameter_or<int>("max_iteration", NUM_MAX_ITERATIONS, 4);
-        this->get_parameter_or<string>("map_file_path", map_file_path, "");
-        this->get_parameter_or<string>("common.lid_topic", lid_topic, "/livox/lidar");
-        this->get_parameter_or<string>("common.imu_topic", imu_topic,"/livox/imu");
+        std::string s;
+        this->get_parameter_or<string>("map_file_path", s, "");
+        map_file_path = s;
+        this->get_parameter_or<string>("common.lid_topic", s, "/livox/lidar");
+        lid_topic = s;
+        this->get_parameter_or<string>("common.imu_topic", s, "/livox/imu");
+        imu_topic = s;
         this->get_parameter_or<bool>("common.time_sync_en", time_sync_en, false);
         this->get_parameter_or<double>("common.time_offset_lidar_to_imu", time_diff_lidar_to_imu, 0.0);
         this->get_parameter_or<double>("filter_size_corner",filter_size_corner_min,0.5);
@@ -872,8 +877,12 @@ public:
         this->get_parameter_or<int>("pcd_save.interval", pcd_save_interval, -1);
         this->get_parameter_or<vector<double>>("mapping.extrinsic_T", extrinT, vector<double>());
         this->get_parameter_or<vector<double>>("mapping.extrinsic_R", extrinR, vector<double>());
-        this->get_parameter_or<string>("frame_id", frame_id, "camera_init");
-        this->get_parameter_or<string>("child_frame_id", child_frame_id, "body");
+        this->get_parameter_or<string>("frame_id.map_frame", s, "camera_init");
+        frame_id = s;
+        this->get_parameter_or<string>("frame_id.body_frame", s, "body");
+        child_frame_id = s;
+        this->get_parameter_or<string>("frame_id.lidar_frame", s, "livox");
+        p_pre->lidar_frame_id = s;
 
         RCLCPP_INFO(this->get_logger(), "p_pre->lidar_type %d", p_pre->lidar_type);
 
